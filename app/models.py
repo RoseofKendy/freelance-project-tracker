@@ -8,6 +8,9 @@ class Client(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
     projects = relationship("Project", back_populates="client")
+    email = Column(String)
+    phone_number = Column(String)
+    notes = Column(String)
 
 class Project(Base):
     __tablename__ = 'projects'
