@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Float, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Date, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from app.database import Base
 
 class Client(Base):
@@ -26,6 +27,7 @@ class Task(Base):
     complete = Column(Boolean, default=False)
     project_id = Column(Integer, ForeignKey('projects.id'))
     project = relationship("Project", back_populates="tasks")
+    time_logs = relationship("TimeLog", back_populates="task", cascade="all, delete")
 
 class Payment(Base):
     __tablename__ = 'payments'
@@ -35,3 +37,18 @@ class Payment(Base):
     date = Column(Date)
     project_id = Column(Integer, ForeignKey('projects.id'))
     project = relationship("Project", back_populates="payments")
+
+class TimeLog(Base):
+    __tablename__ = 'time_logs'
+
+    id = Column(Integer, primary_key=True)
+    task_id = Column(Integer, ForeignKey('tasks.id'))
+    start_time = Column(DateTime, default=datetime.utcnow)
+    end_time = Column(DateTime, nullable=True)
+
+    task = relationship("Task", back_populates="time_logs")
+
+    def duration_minutes(self):
+        if self.end_time:
+            return int((self.end_time - self.start_time).total_seconds() / 60)
+        return None

@@ -1,5 +1,5 @@
 from app.database import Base, engine, Session
-from app.models import Client, Project, Task, Payment
+from app.models import Client, Project, Task, Payment, TimeLog
 from datetime import date
 
 Base.metadata.create_all(engine)
