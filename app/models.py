@@ -35,6 +35,8 @@ class Task(Base):
     time_logs = relationship("TimeLog", back_populates="task", cascade="all, delete")
     is_recurring = Column(Boolean, default=False)
     recurrence_interval = Column(String)
+    due_date = Column(Date)
+    priority_level = Column(Integer)
 
 class Payment(Base):
     __tablename__ = 'payments'
