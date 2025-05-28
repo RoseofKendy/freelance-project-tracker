@@ -1,6 +1,8 @@
 import click
 from app.utils import *
-from app.models import Task, TimeLog
+from app.models import Task, TimeLog, Client, Project
+from app.database import Session
+from datetime import datetime
 
 @click.group()
 def cli():
@@ -20,8 +22,26 @@ def listclients():
 @click.argument("client")
 @click.option("--priority", default="Medium")
 @click.option("--deadline", default=None)
-def addproject(title, client, priority, deadline):
-    add_project(title, client, priority, deadline)
+@click.option("--is_recurring", is_flag=True, help="Set if the project is recurring")
+@click.option("--recurrence_interval", default=None, help="Interval: daily, weekly, monthly, etc.")
+def addproject(title, client, priority, deadline, is_recurring, recurrence_interval):
+    session = Session()
+    client_obj = session.query(Client).get(client)
+    if not client_obj:
+        click.echo(f"Client with ID {client} does not exist.")
+        return
+
+    new_project = Project(
+        title=title,
+        client_id=client_obj.id,
+        priority=priority,
+        deadline=deadline,
+        is_recurring=is_recurring,
+        recurrence_interval=recurrence_interval if is_recurring else None
+    )
+    session.add(new_project)
+    session.commit()
+    click.echo(f"Added project '{title}' for client '{client_obj.name}' with ID {new_project.id}.")
 
 @cli.command()
 def listprojects():
