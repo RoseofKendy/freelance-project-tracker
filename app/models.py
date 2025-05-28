@@ -32,6 +32,6 @@ class Payment(Base):
     id = Column(Integer, primary_key=True)
     amount = Column(Float)
     date = Column(Date)
-    status = Column(String)  # e.g., "Pending", "Received"
+    status = Column(String)
     project_id = Column(Integer, ForeignKey('projects.id'))
     project = relationship('Project', back_populates='payments')
