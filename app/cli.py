@@ -1,17 +1,12 @@
 import click
-from app.utils import (
-    add_client, list_clients,
-    add_project, list_projects,
-    add_task, mark_task_complete, task_progress_report,
-    log_payment, view_payments
-)
+from app.utils import *
 
 @click.group()
 def cli():
     pass
 
 @cli.command()
-@click.argument('name')
+@click.argument("name")
 def addclient(name):
     add_client(name)
 
@@ -20,25 +15,25 @@ def listclients():
     list_clients()
 
 @cli.command()
-@click.argument('title')
-@click.argument('client_name')
-@click.option('--priority', default='Medium')
-@click.option('--deadline', default=None, help='Deadline (YYYY-MM-DD)')
-def addproject(title, client_name, priority, deadline):
-    add_project(title, client_name, priority, deadline)
+@click.argument("title")
+@click.argument("client")
+@click.option("--priority", default="Medium")
+@click.option("--deadline", default=None)
+def addproject(title, client, priority, deadline):
+    add_project(title, client, priority, deadline)
 
 @cli.command()
 def listprojects():
     list_projects()
 
 @cli.command()
-@click.argument('project_title')
-@click.argument('description')
-def addtask(project_title, description):
-    add_task(project_title, description)
+@click.argument("project")
+@click.argument("description")
+def addtask(project, description):
+    add_task(project, description)
 
 @cli.command()
-@click.argument('task_id', type=int)
+@click.argument("task_id", type=int)
 def marktaskcomplete(task_id):
     mark_task_complete(task_id)
 
@@ -47,13 +42,18 @@ def progressreport():
     task_progress_report()
 
 @cli.command()
-@click.argument('project_title')
-@click.argument('amount', type=float)
-@click.argument('status')
-@click.option('--date', default=None, help='Payment date (YYYY-MM-DD)')
-def logpayment(project_title, amount, status, date):
-    log_payment(project_title, amount, status, date)
+@click.argument("project")
+@click.argument("amount", type=float)
+@click.argument("status")
+@click.option("--date", default=None)
+def logpayment(project, amount, status, date):
+    log_payment(project, amount, status, date)
 
 @cli.command()
 def viewpayments():
     view_payments()
+
+@cli.command()
+@click.argument("filename")
+def exportpayments(filename):
+    export_payments_csv(filename)
