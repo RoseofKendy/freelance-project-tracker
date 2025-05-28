@@ -19,6 +19,8 @@ class Project(Base):
     client = relationship("Client", back_populates="projects")
     tasks = relationship("Task", back_populates="project")
     payments = relationship("Payment", back_populates="project")
+    is_recurring = Column(Boolean, default=False)
+    recurrence_interval = Column(String)
 
 class Task(Base):
     __tablename__ = 'tasks'
@@ -28,6 +30,8 @@ class Task(Base):
     project_id = Column(Integer, ForeignKey('projects.id'))
     project = relationship("Project", back_populates="tasks")
     time_logs = relationship("TimeLog", back_populates="task", cascade="all, delete")
+    is_recurring = Column(Boolean, default=False)
+    recurrence_interval = Column(String)
 
 class Payment(Base):
     __tablename__ = 'payments'
