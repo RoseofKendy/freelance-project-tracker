@@ -59,8 +59,8 @@ def list_clients():
 @click.option('--client_id', type=int, prompt='Client ID', help='ID of the client for this project.')
 @click.option('--name', prompt='Project Name', help='Name of the project.')
 @click.option('--description', prompt='Description (optional)', default='', help='Brief description of the project.')
-@click.option('--deadline', prompt='Deadline (YYYY-MM-DD, optional)', default='', help='Project deadline date.', callback=lambda ctx, param, value: datetime.strptime(value, '%Y-%m-%d') if value else None)
-@click.option('--priority', type=click.Choice(['Low', 'Medium', 'High']), default='Medium', help='Priority of the project.')
+@click.option('--deadline', prompt='Deadline (YYYY-MM-DD, optional)', default='', help='Project deadline date.', callback=lambda ctx, param, value: datetime.strptime(value.split()[0], '%Y-%m-%d') if value else None)
+@click.option('--priority', type=click.Choice(['Low', 'Medium', 'High']), default='', help='Priority of the project.')
 def add_project(client_id, name, description, deadline, priority):
     """Adds a new project to a client."""
     db: Session = next(get_db())
