@@ -1,0 +1,15 @@
+--- Clients ---
+ID,Name,Contact Person,Email,Phone
+1,Acme Corp,Jane Doe,jane.doe@acmecorp.com,5551234
+
+--- Projects ---
+ID,Project Name,Client Name,Description,Deadline,Priority,Status,Progress (%)
+1,Website Redesign,Acme Corp,Redesign the company website with new branding.,2025-07-31,Medium,Pending,100.00
+
+--- Tasks ---
+ID,Project Name,Description,Completed,Created At,Completed At
+1,Website Redesign,Design homepage mockup,Yes,2025-05-30 01:31:20,2025-05-30 01:36:03
+
+--- Payments ---
+ID,Project Name,Amount,Type,Date,Notes
+1,Website Redesign,1500.00,Received,2025-05-30 01:38:08,
