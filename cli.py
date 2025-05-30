@@ -60,11 +60,11 @@ def list_clients():
 @click.option('--name', prompt='Project Name', help='Name of the project.')
 @click.option('--description', prompt='Description (optional)', default='', help='Brief description of the project.')
 @click.option('--deadline', prompt='Deadline (YYYY-MM-DD, optional)', default='', help='Project deadline date.', callback=lambda ctx, param, value: datetime.strptime(value.split()[0], '%Y-%m-%d') if value else None)
-@click.option('--priority', type=click.Choice(['Low', 'Medium', 'High']), default='', help='Priority of the project.')
+@click.option('--priority', prompt='Low', 'Medium', 'High', default='', help='Priority of the project.')
 def add_project(client_id, name, description, deadline, priority):
     """Adds a new project to a client."""
     db: Session = next(get_db())
-    client = db.query(Client).get(client_id)
+    client = db.get(Client, client_id)
     if not client:
         click.echo(f"Error: Client with ID {client_id} not found.")
         return
@@ -115,7 +115,7 @@ def list_projects(client_id):
 def add_task(project_id, description):
     """Adds a new task to a project."""
     db: Session = next(get_db())
-    project = db.query(Project).get(project_id)
+    project = db.get(Project, project_id)
     if not project:
         click.echo(f"Error: Project with ID {project_id} not found.")
         return
@@ -135,7 +135,7 @@ def mark_task_complete(task_id):
     to 'Completed' if all tasks in that project are complete.
     """
     db: Session = next(get_db())
-    task = db.query(Task).get(task_id)
+    task = db.get(Task, task_id)
     if not task:
         click.echo(f"Error: Task with ID {task_id} not found.")
         return
@@ -214,7 +214,7 @@ def progress_report(project_id):
 def log_payment(project_id, amount, payment_type, notes):
     """Records a new payment for a project."""
     db: Session = next(get_db())
-    project = db.query(Project).get(project_id)
+    project = db.get(Project, project_id)
     if not project:
         click.echo(f"Error: Project with ID {project_id} not found.")
         return
